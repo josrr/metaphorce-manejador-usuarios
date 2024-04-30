@@ -1,0 +1,24 @@
+# Authorization Server
+server.port=9000
+spring.security.oauth2.authorizationserver.issuer=http://authserver:9000
+gateway.uri=http://gateway:8200
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.client-id=gateway-client
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.client-secret={noop}secret
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.client-name=Gateway Client
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.client-authentication-methods[0]=client_secret_basic
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.authorization-grant-types[0]=authorization_code
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.authorization-grant-types[1]=refresh_token
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.authorization-grant-types[2]=client_credentials
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.redirect-uris[0]=http://localhost:8200/login/oauth2/code/gateway-client-oidc
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.redirect-uris[1]=http://localhost:8200/authorized
+# spring.security.oauth2.authorizationserver.client.gateway-client.registration.scopes[0]=openid
+
+# Database
+spring.datasource.url=jdbc:postgresql://postgresql:5432/evaluaciondb
+spring.datasource.username=evaluacion
+spring.datasource.password=pL1L7VBinFN1DvLFXNjrHrG8
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+# spring.datasource.type=com.zaxxer.hikari.HikariDataSource
+# spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect

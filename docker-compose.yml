@@ -1,0 +1,60 @@
+services:
+  postgresql:
+    image: 'postgres:16.2'
+    container_name: postgresql
+    hostname: postgresql
+    ports:
+      - 5432:5432
+    env_file:
+      - .env
+    volumes:
+      - ./db/data/:/var/lib/postgresql/data/
+      - ./db/init-user-db.sh:/docker-entrypoint-initdb.d/01-init-user-db.sh
+      - ./db/init.sql:/docker-entrypoint-initdb.d/02-init.sql
+  config:
+    build: config
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.application.name": "config-server",
+        "spring.profiles.active": "native",
+        "server.port": 8888
+      }'
+    ports:
+      - 8888:8888
+  authserver:
+    build: authserver
+    depends_on:
+      postgresql:
+        condition: service_started
+      config:
+        condition: service_started
+    ports:
+      - 9000:9000
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "spring.application.name": "authserver",
+        "spring.config.import": "optional:configserver:http://config:8888"
+      }'
+      CONFIG_HOST: config
+      CONFIG_PORT: 8888
+      DB_HOST: postgresql
+      DB_PORT: 5432
+    # healthcheck:
+    #   test: curl --fail http://127.0.0.1:9000/actuator/health || exit 1
+    #   interval: 30s
+    #   retries: 10
+    #   start_period: 30s
+    #   timeout: 10s
+  # users:
+  #   build: users
+  #   depends_on:
+  #     authserver:
+  #       condition: service_started
+  #   ports:
+  #     - 8200:8200
+  #   healthcheck:
+  #     test: curl --fail http://127.0.0.1:8200/actuator/health || exit 1
+  #     interval: 30s
+  #     retries: 10
+  #     start_period: 30s
+  #     timeout: 10s
