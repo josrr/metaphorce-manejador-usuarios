@@ -3,12 +3,16 @@
 
 Manejador de usuarios implementado como cuatro microservicios con Spring Cloud.
 
+* Repositorio GIT
+
+https://github.com/josrr/metaphorce-manejador-usuarios
+
 * Microservicios
 
-** Servidor de configuración (config)
-** Servidor de autorización (authserver)
-** Gateway (gateway)
-** Servicio REST para manejar usuarios (users)
+ + Servidor de configuración (config)
+ + Servidor de autorización (authserver)
+ + Gateway (gateway)
+ + Servicio REST para manejar usuarios (users)
 
 * Descripción del Servicio REST
 
@@ -36,11 +40,11 @@ Crear un usuario.
 *** Respuesta
 #+BEGIN_SRC json
 {
-  id: 4,
-  name: "usuario01",
-  email: "usuario01@ejemplo.com",
-  enabled: true,
-  roles: null
+  "id": 4,
+  "name": "usuario01",
+  "email": "usuario01@ejemplo.com",
+  "enabled": true,
+  "roles": null
 }
 #+END_SRC
 
@@ -62,11 +66,11 @@ Modificar un usuario.
 *** Respuesta
 #+BEGIN_SRC json
 {
-    id: 3,
-    name: "usuario01",
-    email: "usuario01@ejemplo.com",
-    enabled: true,
-    roles: []
+  "id": 3,
+  "name": "usuario01",
+  "email": "usuario01@ejemplo.com",
+  "enabled": true,
+  "roles": []
 }
 #+END_SRC
 
@@ -94,9 +98,10 @@ Vacía
 *** Respuesta
 #+BEGIN_SRC json
 {
-  userId: 3,
-  roleId: 1
+  "userId": 3,
+  "roleId": 1
 }
+#+END_SRC
 
 ** =DELETE /users/{userId}/roles/{roleName}=
 
@@ -111,7 +116,6 @@ Vacía
 
 *** Respuesta
 Vacía
-
 
 * Docker Compose
 
