@@ -1,0 +1,134 @@
+#+TITLE: Manejador de usuarios
+#+AUTHOR: José M. Á. Ronquillo Rivera
+
+Manejador de usuarios implementado como cuatro microservicios con Spring Cloud.
+
+* Microservicios
+
+** Servidor de configuración (config)
+** Servidor de autorización (authserver)
+** Gateway (gateway)
+** Servicio REST para manejar usuarios (users)
+
+* Descripción del Servicio REST
+
+** =GET /users=
+
+Obtener una lista de los usuarios.
+
+** =GET /users/{id}=
+
+Obtener un usuario.
+
+** =POST /users=
+
+Crear un usuario.
+
+*** Petición
+#+BEGIN_SRC json
+{
+  "name": "usuario01",
+  "email": "usuario01@ejemplo.com",
+  "password": "loquesea"
+}
+#+END_SRC
+
+*** Respuesta
+#+BEGIN_SRC json
+{
+  id: 4,
+  name: "usuario01",
+  email: "usuario01@ejemplo.com",
+  enabled: true,
+  roles: null
+}
+#+END_SRC
+
+** =PUT /users=
+
+Modificar un usuario.
+
+*** Petición
+#+BEGIN_SRC json
+{
+  "id": 3,
+  "name": "usuario01",
+  "email": "usuario01@ejemplo.com",
+  "enabled": true,
+  "password": "otra01234"
+}
+#+END_SRC
+
+*** Respuesta
+#+BEGIN_SRC json
+{
+    id: 3,
+    name: "usuario01",
+    email: "usuario01@ejemplo.com",
+    enabled: true,
+    roles: []
+}
+#+END_SRC
+
+** =DELETE /users/{userId}=
+
+Eliminar un usuario.
+*** Petición
+Vacía
+
+*** Respuesta
+Vacía
+
+
+** =POST /users/{userId}/roles/{roleName}=
+
+Agrega un rol a un usuario.
+
+=roleName= puede ser:
+  1. =administrador=
+  2. =encargado=
+
+*** Petición
+Vacía
+
+*** Respuesta
+#+BEGIN_SRC json
+{
+  userId: 3,
+  roleId: 1
+}
+
+** =DELETE /users/{userId}/roles/{roleName}=
+
+=roleName= puede ser:
+  1. =administrador=
+  2. =encargado=
+
+Elimina un rol de un usuario.
+
+*** Petición
+Vacía
+
+*** Respuesta
+Vacía
+
+
+* Docker Compose
+
+Por ahora no funciona con Docker compose; por alguna razón el servidor
+de autorización descarga la configuración de
+=http://config:8888/authserver/default=, lo cual parece que logra;
+pero un momento después la intenta descargar de
+=http://127.0.0.1:8888/authserver/default= y esto no lo logra y se
+pierde la configuración.
+
+Pasé mucho tiempo buscando información sobre este problema; no he
+encontrado una solución. Debido a este problema no he podido terminar
+la configuración de Docker compose.
+
+Los microservicios pueden iniciarse uno por uno en el siguiente orden:
+
+ 1. config
+ 2. authserver
+ 3. gateway
+ 4. users
