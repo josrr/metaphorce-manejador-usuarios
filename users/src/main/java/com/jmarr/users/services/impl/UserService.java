@@ -86,7 +86,7 @@ public class UserService implements UserServiceI{
 
     @Override
     public boolean deleteById(Long id) throws RuntimeException {
-        if(repository.existsById(id))
+        if( ! repository.existsById(id) )
             throw new ResourceNotFoundException("El usuario no existe");
         repository.deleteById(id);
         return true;
