@@ -5,6 +5,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,9 +41,9 @@ public class UserService implements UserServiceI{
     }
 
     @Override
-    public List<UserResponse> getAll() {
-        List<User> users = (List<User>)repository.findAll();
-        return mapper.toResponseList(users);
+    public Page<UserResponse> getAll(Pageable pageable) {
+        Page<User> users = repository.findAll(pageable);
+        return users.map(mapper::toResponse);
     }
 
     @Override
