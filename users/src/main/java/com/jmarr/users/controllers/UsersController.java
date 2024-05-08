@@ -1,9 +1,12 @@
 package com.jmarr.users.controllers;
 
-import java.util.List;
+//import java.util.List;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jmarr.users.controllers.request.UpdateUserRequest;
@@ -21,7 +25,7 @@ import com.jmarr.users.controllers.request.UserRequest;
 import com.jmarr.users.controllers.response.UserResponse;
 import com.jmarr.users.services.UserServiceI;
 
-import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/users")
@@ -31,8 +35,10 @@ public class UsersController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('read')")
-    public ResponseEntity<List<UserResponse>> getAll(Authentication authentication) {
-        return ResponseEntity.ok().body(userService.getAll());
+    public ResponseEntity<Page<UserResponse>> getAll(@RequestParam(defaultValue="0") int page,
+                                                     @RequestParam(defaultValue="10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok().body(userService.getAll(pageable));
     }
 
     @GetMapping("/{id}")
